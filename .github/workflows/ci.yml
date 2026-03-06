@@ -1,0 +1,30 @@
+name: React CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Descargar repositorio
+      uses: actions/checkout@v3
+
+    - name: Instalar Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    - name: Instalar dependencias
+      run: npm install
+
+    - name: Ejecutar pruebas
+      run: npm test -- --watchAll=false
+
+    - name: Construir imagen Docker
+      run: docker build -t react-ci-app .
